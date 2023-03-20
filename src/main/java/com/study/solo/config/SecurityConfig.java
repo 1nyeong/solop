@@ -16,7 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
-    public BCryptPasswordEncoder passwordEncoder(){
+    public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
@@ -27,19 +27,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
         http.httpBasic().disable();
-        http.authorizeHttpRequests()
+        http.authorizeRequests()
                 .antMatchers("/mypage/**", "/security/**")
                 .authenticated()
                 .anyRequest()
                 .permitAll()
                 .and()
                 .formLogin()
-                .loginPage("/account/login")
-                .loginProcessingUrl("/account/login")
-                .defaultSuccessUrl("index");
+                .loginPage("/account/login") // 로그인 페이지 get요청
+                .loginProcessingUrl("/account/login") // 로그인 인증 post 요청
+                .defaultSuccessUrl("/index");
+
     }
 }
