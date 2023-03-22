@@ -4,6 +4,7 @@ import com.study.solo.exception.CustomValidationException;
 import com.study.solo.repository.AccountRepository;
 import com.study.solo.web.dto.UserDto;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -15,6 +16,7 @@ public class AccountService {
 
     private AccountRepository accountRepository;
     public UserDto registerUser(UserDto userDto) {
+        userDto.setPassword(new BCryptPasswordEncoder().encode(userDto.getPassword()));
         accountRepository.saveUser(userDto);
         accountRepository.saveRole(userDto);
         return userDto;
